@@ -1,4 +1,5 @@
 # Import required packages
+from numpy.core.fromnumeric import shape
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -55,3 +56,39 @@ def verify_num_of_cols(frames):
 # Create a single dataframe that combines the 12 dataframes
 df = pd.concat(frames, axis=0, ignore_index=True)
 print(df.columns)
+
+# Summary of the data
+print(df.head(10))
+print(df.info())
+
+# Data cleaning
+
+# First we need to establish which columns and rows have missing data
+# Columns with missing values
+print(df.isnull().sum())
+
+# Rows missing values
+print(df[df.isnull().any(axis=1)])
+
+# Examine the first row with missing values further
+print(df.iloc[800])
+
+# Find out the total number of rows that contain null values
+sum_of_rows_with_null_values = df.isnull().any(axis=1).sum()
+print(f"Total Null rows: {sum_of_rows_with_null_values}")
+
+# Percentage of rows with missing values in the dataset
+pc_nan_rows = sum_of_rows_with_null_values / df.shape[0] * 100
+print(f"PC of null rows: {pc_nan_rows}")
+
+# Drow rows with missing data
+# Since rows with missing data appear to contain more than one missing value and
+# only account for 7.7% of the dataset, we drop them.
+
+clean_df = df.dropna(axis="index")
+
+# Check if new df has any missing values
+print(clean_df.isnull().sum())
+
+# Summary of the clean df
+print(clean_df)
