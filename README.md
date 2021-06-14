@@ -1,6 +1,7 @@
 # **Case Study: How does a bike-share company navigate speedy success?**
 
 ![people_riding_a_bike](./images/bike.jpg)
+*Image: Getty Images/iStock*
 
 ## Scenario 
 
