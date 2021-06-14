@@ -1,5 +1,7 @@
 # **Case Study: How does a bike-share company navigate speedy success?**
 
+![people_riding_a_bike](./images/bike.jpg)
+
 ## Scenario 
 
 You are a junior data analyst working in the marketing analyst team at Cyclistic, a bike-share company in Chicago. The director of
