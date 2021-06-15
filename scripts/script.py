@@ -1,5 +1,6 @@
 # Import required packages
 from numpy.core.fromnumeric import shape, sort
+from numpy.lib.arraypad import pad
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -123,9 +124,9 @@ clean_df["ride_length"] = ride_length
 # This colum will contain the day of the week a ride started
 clean_df["day_of_week"] = clean_df["started_at"].dt.day_name()
 
-# month column
-# clean_df["month"] = clean_df["started_at"].dt.strftime("%b")
+# month columns
 clean_df["month"] = pd.DatetimeIndex(clean_df["started_at"]).month
+clean_df["month_name"] = clean_df["started_at"].dt.strftime("%b")
 print(clean_df)
 
 # Get a summary of the data
@@ -181,10 +182,10 @@ print(ride_hires_per_month)
 plt.figure(figsize=(11, 5), dpi=100)
 plt.title("Total Bike Hires per Month", loc="left", pad=20)
 sns.barplot(data=ride_hires_per_month, x=months, y="Total Hires")
-# plt.show()
+plt.show()
 
 
-# Find out what day of the week has the most bike hires
+# Find out what days of the week have the most bike hires
 
 ride_hires_per_day = (
     clean_df["day_of_week"]
@@ -198,20 +199,55 @@ print(ride_hires_per_day)
 plt.figure(figsize=(11, 5), dpi=100)
 plt.title("Total Bike Hires per Day of the Week", loc="left", pad=20)
 sns.barplot(data=ride_hires_per_day, x="Day", y="Total Hires")
-# plt.show()
+plt.show()
 
-# Find out how daily bike hires are distributed per customer category
+
+# BIKE HIRES PER CATEGORY PER MONTH
+# Find out how ridership compares everymonth for the two rider categories
+
+monthly_bike_hires_per_customer_category = clean_df.groupby(["member_casual"])[
+    "month_name"
+].value_counts(sort=True)
+
+monthly_casual_member_df = pd.DataFrame()
+monthly_casual_member_df["casual"] = monthly_bike_hires_per_customer_category["casual"]
+monthly_casual_member_df["member"] = monthly_bike_hires_per_customer_category["member"]
+monthly_casual_member_df["Month"] = monthly_casual_member_df.index
+
+
+print(monthly_casual_member_df)
+
+pos = list(range(len(monthly_casual_member_df["casual"])))
+width = 0.25
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+plt.bar(pos, monthly_casual_member_df["casual"], width)
+plt.bar([p + width for p in pos], monthly_casual_member_df["member"], width)
+
+# Setting the y axis label
+ax.set_ylabel("Total Hires")
+# Setting the chart's title
+ax.set_title("Total Hires per Category per Month", loc="left", pad=20)
+
+# Setting the position of the x ticks
+ax.set_xticks([p + 1.5 * width for p in pos])
+
+# Setting the labels for the x ticks
+ax.set_xticklabels(monthly_casual_member_df["Month"])
+
+# Adding the legend and showing the plot
+plt.legend(["Casual", "Member"], loc="upper right")
+plt.show()
+
+
+# BIKE HIRES PER CATEGORY PER DAY
+# Find out how ridership compares everyday for the two rider categories
 
 bike_hires_per_customer_category = clean_df.groupby(["member_casual"])[
     "day_of_week"
 ].value_counts(sort=True)
 print(bike_hires_per_customer_category)
-
-# From the data:
-
-# Sartuday has the most bike hires for both casual and member clients
-# For casual riders, sartuday is followed closely by Sunday and by a greater margin by
-# For member riders, Sartuday is followed closely by Friday and Wednesday
 
 casual_member_df = pd.DataFrame()
 casual_member_df["casual"] = bike_hires_per_customer_category["casual"]
@@ -220,8 +256,29 @@ casual_member_df["Day"] = casual_member_df.index
 
 print(casual_member_df)
 
-# Lineplot
-plt.figure(figsize=(11, 5), dpi=100)
-plt.title("Total Bike Hires per Day per Rider Category", loc="left", pad=20)
-sns.lineplot(data=casual_member_df)
-# plt.show()
+pos = list(range(len(casual_member_df["casual"])))
+width = 0.25
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+plt.bar(pos, casual_member_df["casual"], width)
+plt.bar(
+    [p + width for p in pos],
+    casual_member_df["member"],
+    width,
+)
+
+# Setting the y axis label
+ax.set_ylabel("Total Hires")
+# Setting the chart's title
+ax.set_title("Total Hires per Category per Day", loc="left", pad=20)
+
+# Setting the position of the x ticks
+ax.set_xticks([p + 1.5 * width for p in pos])
+
+# Setting the labels for the x ticks
+ax.set_xticklabels(casual_member_df["Day"])
+
+# Adding the legend and showing the plot
+plt.legend(["Casual", "Member"], loc="upper right")
+plt.show()
