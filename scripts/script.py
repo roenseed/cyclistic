@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+import datetime
 
 # Read data into dataframes
 
@@ -61,7 +62,7 @@ print(df.columns)
 print(df.head(10))
 print(df.info())
 
-# Data cleaning
+# DATA CLEANING
 
 # First we need to establish which columns and rows have missing data
 # Columns with missing values
@@ -81,14 +82,43 @@ print(f"Total Null rows: {sum_of_rows_with_null_values}")
 pc_nan_rows = sum_of_rows_with_null_values / df.shape[0] * 100
 print(f"PC of null rows: {pc_nan_rows}")
 
-# Drow rows with missing data
+# Drop rows with missing data
 # Since rows with missing data appear to contain more than one missing value and
 # only account for 7.7% of the dataset, we drop them.
+# We do not drop the columns because they have less than 5% missing values
 
 clean_df = df.dropna(axis="index")
 
 # Check if new df has any missing values
+# This step confirms that the data has no missing values
 print(clean_df.isnull().sum())
 
 # Summary of the clean df
+print(clean_df)
+
+# transform started_at and ended_at into datetime
+
+clean_df["started_at"] = pd.to_datetime(clean_df["started_at"])
+clean_df["ended_at"] = pd.to_datetime(clean_df["ended_at"])
+
+print(clean_df.info())
+
+# Sort dataframe in descending order based on ended_at colum
+clean_df.sort_values(by=["ended_at"], inplace=True, ascending=False)
+print(clean_df)
+
+# From above, we notice that the dataframe contains some data for June 2021.
+# Below we remove june 2021 data so that months = 12
+
+june_2021_filter = df["ended_at"] <= "2021-06-03 00:00:00"
+clean_df = clean_df[june_2021_filter]
+
+# Create ride_length column
+clean_df["ride_length"] = clean_df["ended_at"] - clean_df["started_at"]
+print(clean_df)
+
+# day_of_week
+# This colum will contain the day of the week a ride started
+
+clean_df["day_of_week"] = clean_df["started_at"].dt.day_name()
 print(clean_df)
