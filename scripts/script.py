@@ -152,21 +152,6 @@ print(data_descrption)
 # The minimum ride length is 1.2 seconds
 # The maximum ride length is 904.72hours, approxiamately 38days
 
-# Find out what day of the week has the most bike hires
-
-ride_hires_per_day = (
-    clean_df["day_of_week"]
-    .value_counts()
-    .rename_axis("Day")
-    .reset_index(name="Total Hires")
-)
-ride_hires_per_day.sort_values(by=["Total Hires"], inplace=True, ascending=True)
-print(ride_hires_per_day)
-
-plt.figure(figsize=(11, 5), dpi=100)
-plt.title("Total Bike Hires per Day of the Week", loc="left", pad=20)
-sns.barplot(data=ride_hires_per_day, x="Day", y="Total Hires")
-plt.show()
 
 # Find out how bike hires were distibuted throughout the year
 
@@ -196,4 +181,47 @@ print(ride_hires_per_month)
 plt.figure(figsize=(11, 5), dpi=100)
 plt.title("Total Bike Hires per Month", loc="left", pad=20)
 sns.barplot(data=ride_hires_per_month, x=months, y="Total Hires")
-plt.show()
+# plt.show()
+
+
+# Find out what day of the week has the most bike hires
+
+ride_hires_per_day = (
+    clean_df["day_of_week"]
+    .value_counts()
+    .rename_axis("Day")
+    .reset_index(name="Total Hires")
+)
+ride_hires_per_day.sort_values(by=["Total Hires"], inplace=True, ascending=True)
+print(ride_hires_per_day)
+
+plt.figure(figsize=(11, 5), dpi=100)
+plt.title("Total Bike Hires per Day of the Week", loc="left", pad=20)
+sns.barplot(data=ride_hires_per_day, x="Day", y="Total Hires")
+# plt.show()
+
+# Find out how daily bike hires are distributed per customer category
+
+bike_hires_per_customer_category = clean_df.groupby(["member_casual"])[
+    "day_of_week"
+].value_counts(sort=True)
+print(bike_hires_per_customer_category)
+
+# From the data:
+
+# Sartuday has the most bike hires for both casual and member clients
+# For casual riders, sartuday is followed closely by Sunday and by a greater margin by
+# For member riders, Sartuday is followed closely by Friday and Wednesday
+
+casual_member_df = pd.DataFrame()
+casual_member_df["casual"] = bike_hires_per_customer_category["casual"]
+casual_member_df["member"] = bike_hires_per_customer_category["member"]
+casual_member_df["Day"] = casual_member_df.index
+
+print(casual_member_df)
+
+# Lineplot
+plt.figure(figsize=(11, 5), dpi=100)
+plt.title("Total Bike Hires per Day per Rider Category", loc="left", pad=20)
+sns.lineplot(data=casual_member_df)
+# plt.show()
