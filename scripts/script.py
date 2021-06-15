@@ -124,7 +124,7 @@ clean_df["ride_length"] = ride_length
 clean_df["day_of_week"] = clean_df["started_at"].dt.day_name()
 
 # month column
-#clean_df["month"] = clean_df["started_at"].dt.strftime("%b")
+# clean_df["month"] = clean_df["started_at"].dt.strftime("%b")
 clean_df["month"] = pd.DatetimeIndex(clean_df["started_at"]).month
 print(clean_df)
 
@@ -160,11 +160,40 @@ ride_hires_per_day = (
     .rename_axis("Day")
     .reset_index(name="Total Hires")
 )
-ride_hires_per_day.sort_values(
-    by=["Total Hires"], inplace=True, ascending=True)
+ride_hires_per_day.sort_values(by=["Total Hires"], inplace=True, ascending=True)
 print(ride_hires_per_day)
 
 plt.figure(figsize=(11, 5), dpi=100)
 plt.title("Total Bike Hires per Day of the Week", loc="left", pad=20)
 sns.barplot(data=ride_hires_per_day, x="Day", y="Total Hires")
+plt.show()
+
+# Find out how bike hires were distibuted throughout the year
+
+ride_hires_per_month = (
+    clean_df["month"]
+    .value_counts(sort=False)
+    .rename_axis("Month")
+    .reset_index(name="Total Hires")
+)
+# ride_hires_per_month.sort_values(by=["Total Hires"], inplace=True, ascending=True)
+months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+]
+print(ride_hires_per_month)
+
+plt.figure(figsize=(11, 5), dpi=100)
+plt.title("Total Bike Hires per Month", loc="left", pad=20)
+sns.barplot(data=ride_hires_per_month, x=months, y="Total Hires")
 plt.show()
