@@ -1,5 +1,5 @@
 # Import required packages
-from numpy.core.fromnumeric import shape
+from numpy.core.fromnumeric import shape, sort
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -92,9 +92,10 @@ clean_df = df.dropna(axis="index")
 # Check if new df has any missing values
 # This step confirms that the data has no missing values
 print(clean_df.isnull().sum())
-
-# Summary of the clean df
 print(clean_df)
+
+
+# PROCESS DATA
 
 # transform started_at and ended_at into datetime
 
@@ -113,12 +114,57 @@ print(clean_df)
 june_2021_filter = df["ended_at"] <= "2021-06-03 00:00:00"
 clean_df = clean_df[june_2021_filter]
 
-# Create ride_length column
-clean_df["ride_length"] = clean_df["ended_at"] - clean_df["started_at"]
-print(clean_df)
+# Create ride_length column (ride_length is in minutes)
+ride_length = clean_df["ended_at"] - clean_df["started_at"]
+ride_length = np.round(ride_length.dt.total_seconds() / 60, 2)
+clean_df["ride_length"] = ride_length
 
 # day_of_week
 # This colum will contain the day of the week a ride started
-
 clean_df["day_of_week"] = clean_df["started_at"].dt.day_name()
+
+# month column
+#clean_df["month"] = clean_df["started_at"].dt.strftime("%b")
+clean_df["month"] = pd.DatetimeIndex(clean_df["started_at"]).month
 print(clean_df)
+
+# Get a summary of the data
+data_descrption = clean_df.describe()
+print(data_descrption)
+
+# From this summary:
+# We note that there are some negative values  for ride length
+# Below we take a better look at them
+
+print(clean_df[clean_df["ride_length"] < 0])
+
+# 10k rows have negative values - we filter them out
+clean_df = clean_df[clean_df["ride_length"] > 0]
+
+# ANALYZE DATA
+
+# Summary
+data_descrption = clean_df.describe()
+print(data_descrption)
+
+# From the new summary:
+# The average ride_length is 26.98 minutes
+# The minimum ride length is 1.2 seconds
+# The maximum ride length is 904.72hours, approxiamately 38days
+
+# Find out what day of the week has the most bike hires
+
+ride_hires_per_day = (
+    clean_df["day_of_week"]
+    .value_counts()
+    .rename_axis("Day")
+    .reset_index(name="Total Hires")
+)
+ride_hires_per_day.sort_values(
+    by=["Total Hires"], inplace=True, ascending=True)
+print(ride_hires_per_day)
+
+plt.figure(figsize=(11, 5), dpi=100)
+plt.title("Total Bike Hires per Day of the Week", loc="left", pad=20)
+sns.barplot(data=ride_hires_per_day, x="Day", y="Total Hires")
+plt.show()
