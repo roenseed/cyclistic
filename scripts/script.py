@@ -1,7 +1,4 @@
 # Import required packages
-from numpy.core.fromnumeric import shape, sort
-from numpy.lib.arraypad import pad
-from numpy.lib.function_base import average
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -95,8 +92,14 @@ clean_df = df.dropna(axis="index")
 # Check if new df has any missing values
 # This step confirms that the data has no missing values
 print(clean_df.isnull().sum())
-print(clean_df)
 
+# Check if any ID's are duplicate
+total_duplicate_rows = clean_df.duplicated().sum()
+print(f"Duplicate rows: {total_duplicate_rows}")
+
+# Cleaned dataframe
+print(clean_df)
+print(clean_df.info())
 
 # PROCESS DATA
 
@@ -104,8 +107,6 @@ print(clean_df)
 
 clean_df["started_at"] = pd.to_datetime(clean_df["started_at"])
 clean_df["ended_at"] = pd.to_datetime(clean_df["ended_at"])
-
-print(clean_df.info())
 
 # Sort dataframe in descending order based on ended_at colum
 clean_df.sort_values(by=["ended_at"], inplace=True, ascending=False)
@@ -139,7 +140,8 @@ print(data_descrption)
 # We note that there are some negative values  for ride length
 # Below we take a better look at them
 
-print(clean_df[clean_df["ride_length"] < 0])
+neg_ride_length = clean_df[clean_df["ride_length"] < 0]
+print(f"Rows with negative ride length value {neg_ride_length}")
 
 # 10k rows have negative values - we filter them out
 clean_df = clean_df[clean_df["ride_length"] > 0]
@@ -160,12 +162,15 @@ print(data_descrption)
 total_riders = clean_df["member_casual"].value_counts()
 print(f"Number of riders per category \n {total_riders}")
 
-# Pie chart to show riders per category
+# Confirm the total number of bike-share riders
+total_riders_using_id = clean_df.groupby(["member_casual"])["ride_id"].count()
+print(f"Total riders using ride_id \n {total_riders_using_id}")
 
+# Pie chart to show riders per category
 fig, ax = plt.subplots(figsize=(8, 4))
 labels = ["Member", "Casual"]
 plt.pie(x=total_riders, autopct="%.1f%%", labels=labels)
-ax.set_title("Total Riders Per Category", pad=20, loc="center")
+ax.set_title("Total Bike Hires Per Rider Category", pad=20, loc="center")
 plt.show()
 
 # Find out how bike hires were distibuted throughout the year
@@ -176,7 +181,7 @@ ride_hires_per_month = (
     .rename_axis("Month")
     .reset_index(name="Total Hires")
 )
-# ride_hires_per_month.sort_values(by=["Total Hires"], inplace=True, ascending=True)
+
 months = [
     "Jan",
     "Feb",
@@ -242,7 +247,7 @@ plt.bar([p + width for p in pos], monthly_casual_member_df["member"], width)
 ax.set_ylabel("Total Hires")
 ax.set_xlabel("Month")
 # Setting the chart's title
-ax.set_title("Total Hires per Category per Month", loc="left", pad=20)
+ax.set_title("Total Bike Hires per Rider Category per Month", loc="left", pad=20)
 
 # Setting the position of the x ticks
 ax.set_xticks([p + 1.5 * width for p in pos])
@@ -260,7 +265,7 @@ plt.show()
 
 bike_hires_per_customer_category = clean_df.groupby(["member_casual"])[
     "day_of_week"
-].value_counts()
+].value_counts(sort=True)
 print(bike_hires_per_customer_category)
 
 casual_member_df = pd.DataFrame()
@@ -282,7 +287,7 @@ plt.bar([p + width for p in pos], casual_member_df["member"], width)
 ax.set_ylabel("Total Hires")
 ax.set_xlabel("Day of the Week")
 # Setting the chart's title
-ax.set_title("Total Hires per Category per Day", loc="left", pad=20)
+ax.set_title("Total Bike Hires per Rider Category per Day", loc="left", pad=20)
 
 # Setting the position of the x ticks
 ax.set_xticks([p + 1.5 * width for p in pos])
@@ -333,7 +338,7 @@ plt.bar([p + width for p in pos], weekly_average_ride_length_df["member"], width
 ax.set_ylabel("Average Ride Length")
 ax.set_xlabel("Day of the Week")
 # Setting the chart's title
-ax.set_title("Average Ride Length per Category per Day", loc="left", pad=20)
+ax.set_title("Average Ride Length per Rider Category per Day", loc="left", pad=20)
 
 # Setting the position of the x ticks
 ax.set_xticks([p + 1.5 * width for p in pos])
@@ -344,3 +349,8 @@ ax.set_xticklabels(weekly_average_ride_length_df["Day"])
 # Adding the legend and showing the plot
 plt.legend(["Casual", "Member"], loc="upper right")
 plt.show()
+
+# RIDEABLE TYPE PER RIDER CATEGORY
+
+type_of_bike = clean_df.groupby(["member_casual"])["rideable_type"].value_counts()
+print(type_of_bike)
