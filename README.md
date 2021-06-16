@@ -37,6 +37,32 @@ This case study uses Cyclistic's historical trip data (previous 12 months) to an
 
 This data is reliable, original, comprehensive and current as it is internally collected and stored safely by Cyclistic from June 2020 to May 2021. Personally identifiable information  such as credit card numbers has been removed because of data-privacy issues.
 
-The data is organized in tabular format and has 13 columns and 4073561 rows. The **member_casual** column will allow me to group, aggregate and compare trends between casual riders and member riders. 
+The data selected for use covers the last 12 months from June 2020 to May 2021. Each month has a separate dataset. The datasets are organized in tabular format and have 13 identical columns. Combined the datasets have 4073561 rows. The **member_casual** column will allow me to group, aggregate and compare trends between casual riders and member riders. 
 
 ## Processing the Data from Dirty to Clean
+
+### Tools
+To process the data from dirty to clean, I chose to use **python.** This is because python is fast and thus useful in dealing with huge dasets. Python is also heavily supported by handy open-source libraries such as pandas and matplotlib. 
+
+### Cleaning the data
+
+After reading in and combining the 12 datasets into a single dataframe, the first step in data cleaning was to identify which columns and rows have missing data. I disvored that 6 out of 13 columns had missing data. Additionally, 314299 also had missing values. 
+
+Next, I indexed into into the first and last row with missing data and disovered that they had null values on multiple columns. I also computed the percentage of rows that had missing values. This stood at 7.71%. Upon examing the columns with missing data, I decided imputation would be a wrong approach because of the nature of the missing data. 
+
+Since, rows with missing values account for a tiny percentage of our data and appear to have missing values on multiple columns, I decided to drop them. 
+
+After dropping rows with missing data, I checked if any of the remaining observations had duplicates. None of the rows were duplicate. After this step, I was confident the data was ready for further processing and analysis. 
+
+### Transforming the data
+
+Next, I checked the summary of the data and discovered that the **started_at** and **ended_at** columns were strings rather than datetime. As such, I converted the columns into datetime using the pandas **to_datetime()** function.
+
+Next, I created the **ride_length** column by getting the difference between the ended_at and started_at columns. This yielded a timedelta object which I converted to seconds then minutes. 
+
+Additionally, I created two more columns **day_of_week** and **month_name**. These contain the day of the week and month which a bike was hired respectively. 
+
+Upon getting the summary to ensure data was ready for analysis, I discovered that there were negative integers on the ride length column. I therefore filtered the rows with negative ride length vlaues to examine them further. A closer examination revealed the negative values were a result of the ended_at day or time being smaller that the started_at. Only 10,237 rows exhibited this phenomena and thus were promptly filtered out. 
+
+Finally, I got the summary of the data and concluded the data was ready for analysis. 
+
