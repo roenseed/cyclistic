@@ -8,7 +8,7 @@ import numpy as np
 import seaborn as sns
 import datetime
 
-sns.set_palette("hls")
+sns.set_palette("Set2")
 # Read data into dataframes
 
 june_2020_df = pd.read_csv("./data/202006-divvy-tripdata.csv")
@@ -146,7 +146,7 @@ clean_df = clean_df[clean_df["ride_length"] > 0]
 
 # ANALYZE DATA
 
-# Summary
+# SUMMARY
 data_descrption = clean_df.describe()
 print(data_descrption)
 
@@ -155,6 +155,18 @@ print(data_descrption)
 # The minimum ride length is 1.2 seconds
 # The maximum ride length is 904.72hours, approxiamately 38days
 
+# TOTAL NUMBER OF RIDERS PER CATEGORY
+
+total_riders = clean_df["member_casual"].value_counts()
+print(f"Number of riders per category \n {total_riders}")
+
+# Pie chart to show riders per category
+
+fig, ax = plt.subplots(figsize=(8, 4))
+labels = ["Member", "Casual"]
+plt.pie(x=total_riders, autopct="%.1f%%", labels=labels)
+ax.set_title("Total Riders Per Category", pad=20, loc="center")
+plt.show()
 
 # Find out how bike hires were distibuted throughout the year
 
@@ -202,26 +214,6 @@ plt.figure(figsize=(11, 5), dpi=100)
 plt.title("Total Bike Hires per Day of the Week", loc="left", pad=20)
 sns.barplot(data=ride_hires_per_day, x="Day", y="Total Hires")
 plt.show()
-
-
-# AVERAGE RIDE LENGTH PER CATEGORY
-
-average_ride_length = clean_df.groupby(["member_casual"])["ride_length"].mean()
-print(f"The average ride length per category {average_ride_length}")
-
-# TOTAL NUMBER OF RIDERS PER CATEGORY
-
-total_riders = clean_df["member_casual"].value_counts()
-print(f"Number of riders per category \n {total_riders}")
-
-# Pie chart to show riders per category
-
-fig, ax = plt.subplots(figsize=(8, 4))
-labels = ["Member", "Casual"]
-plt.pie(x=total_riders, autopct="%.1f%%", labels=labels)
-ax.set_title("Total Riders Per Category", pad=20, loc="center")
-plt.show()
-
 
 # BIKE HIRES PER CATEGORY PER MONTH
 # Find out how ridership compares everymonth for the two rider categories
@@ -283,8 +275,8 @@ width = 0.25
 
 fig, ax = plt.subplots(figsize=(10, 5))
 
-plt.bar(pos, casual_member_df["casual"], width, color="#4299ed")
-plt.bar([p + width for p in pos], casual_member_df["member"], width, color="#f75a8e")
+plt.bar(pos, casual_member_df["casual"], width)
+plt.bar([p + width for p in pos], casual_member_df["member"], width)
 
 # Setting the y and x axis label
 ax.set_ylabel("Total Hires")
@@ -297,6 +289,57 @@ ax.set_xticks([p + 1.5 * width for p in pos])
 
 # Setting the labels for the x ticks
 ax.set_xticklabels(casual_member_df["Day"])
+
+# Adding the legend and showing the plot
+plt.legend(["Casual", "Member"], loc="upper right")
+plt.show()
+
+
+# AVERAGE RIDE LENGTH PER CATEGORY
+
+average_ride_length = clean_df.groupby(["member_casual"])["ride_length"].mean()
+print(f"The average ride length per category {average_ride_length}")
+
+fig, ax = plt.subplots(figsize=(8, 4))
+labels = ["Casual", "Member"]
+plt.pie(x=average_ride_length, autopct="%.1f%%", labels=labels)
+ax.set_title("Average Ride Length", pad=20, loc="center")
+plt.show()
+
+# AVERAGE RIDE LENGTH FOR RIDERS BY DAY OF THE WEEK
+
+average_daily_ride_length = clean_df.groupby(["member_casual", "day_of_week"])[
+    "ride_length"
+].mean()
+print(f"Average ride lenth per category per day {average_daily_ride_length}")
+
+weekly_average_ride_length_df = pd.DataFrame()
+
+weekly_average_ride_length_df["casual"] = average_daily_ride_length["casual"]
+weekly_average_ride_length_df["member"] = average_daily_ride_length["member"]
+weekly_average_ride_length_df["Day"] = weekly_average_ride_length_df.index
+
+print(weekly_average_ride_length_df)
+
+pos = list(range(len(weekly_average_ride_length_df["casual"])))
+width = 0.25
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+plt.bar(pos, weekly_average_ride_length_df["casual"], width)
+plt.bar([p + width for p in pos], weekly_average_ride_length_df["member"], width)
+
+# Setting the y and x axis label
+ax.set_ylabel("Average Ride Length")
+ax.set_xlabel("Day of the Week")
+# Setting the chart's title
+ax.set_title("Average Ride Length per Category per Day", loc="left", pad=20)
+
+# Setting the position of the x ticks
+ax.set_xticks([p + 1.5 * width for p in pos])
+
+# Setting the labels for the x ticks
+ax.set_xticklabels(weekly_average_ride_length_df["Day"])
 
 # Adding the legend and showing the plot
 plt.legend(["Casual", "Member"], loc="upper right")
