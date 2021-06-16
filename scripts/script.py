@@ -1,12 +1,14 @@
 # Import required packages
 from numpy.core.fromnumeric import shape, sort
 from numpy.lib.arraypad import pad
+from numpy.lib.function_base import average
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import datetime
 
+sns.set_palette("hls")
 # Read data into dataframes
 
 june_2020_df = pd.read_csv("./data/202006-divvy-tripdata.csv")
@@ -202,6 +204,25 @@ sns.barplot(data=ride_hires_per_day, x="Day", y="Total Hires")
 plt.show()
 
 
+# AVERAGE RIDE LENGTH PER CATEGORY
+
+average_ride_length = clean_df.groupby(["member_casual"])["ride_length"].mean()
+print(f"The average ride length per category {average_ride_length}")
+
+# TOTAL NUMBER OF RIDERS PER CATEGORY
+
+total_riders = clean_df["member_casual"].value_counts()
+print(f"Number of riders per category \n {total_riders}")
+
+# Pie chart to show riders per category
+
+fig, ax = plt.subplots(figsize=(8, 4))
+labels = ["Member", "Casual"]
+plt.pie(x=total_riders, autopct="%.1f%%", labels=labels)
+ax.set_title("Total Riders Per Category", pad=20, loc="center")
+plt.show()
+
+
 # BIKE HIRES PER CATEGORY PER MONTH
 # Find out how ridership compares everymonth for the two rider categories
 
@@ -225,8 +246,9 @@ fig, ax = plt.subplots(figsize=(10, 5))
 plt.bar(pos, monthly_casual_member_df["casual"], width)
 plt.bar([p + width for p in pos], monthly_casual_member_df["member"], width)
 
-# Setting the y axis label
+# Setting the y and x axis label
 ax.set_ylabel("Total Hires")
+ax.set_xlabel("Month")
 # Setting the chart's title
 ax.set_title("Total Hires per Category per Month", loc="left", pad=20)
 
@@ -246,7 +268,7 @@ plt.show()
 
 bike_hires_per_customer_category = clean_df.groupby(["member_casual"])[
     "day_of_week"
-].value_counts(sort=True)
+].value_counts()
 print(bike_hires_per_customer_category)
 
 casual_member_df = pd.DataFrame()
@@ -261,15 +283,12 @@ width = 0.25
 
 fig, ax = plt.subplots(figsize=(10, 5))
 
-plt.bar(pos, casual_member_df["casual"], width)
-plt.bar(
-    [p + width for p in pos],
-    casual_member_df["member"],
-    width,
-)
+plt.bar(pos, casual_member_df["casual"], width, color="#4299ed")
+plt.bar([p + width for p in pos], casual_member_df["member"], width, color="#f75a8e")
 
-# Setting the y axis label
+# Setting the y and x axis label
 ax.set_ylabel("Total Hires")
+ax.set_xlabel("Day of the Week")
 # Setting the chart's title
 ax.set_title("Total Hires per Category per Day", loc="left", pad=20)
 
