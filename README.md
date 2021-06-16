@@ -31,8 +31,12 @@ The goal of this case study is to provide clear insights for designing marketing
 > 2. Why would casual riders buy Cyclistic annual memberships?
 > 3. How can Cyclistic use digital media to influence casual riders to become members? 
 
-## The data 
+## Preparing the Data 
 
-This case study uses Cyclistic's historical trip data (previous 12 months) to analyze and identify trends. The data has been made available by Motivate International Inc. under and open license. It data can be dowloaded [here](https://divvy-tripdata.s3.amazonaws.com/index.html). 
+This case study uses Cyclistic's historical trip data (previous 12 months) to analyze and identify trends. The data has been made available by Motivate International Inc. under and open license. The data can be dowloaded [here.](https://divvy-tripdata.s3.amazonaws.com/index.html)
 
 This data is reliable, original, comprehensive and current as it is internally collected and stored safely by Cyclistic from June 2020 to May 2021. Personally identifiable information  such as credit card numbers has been removed because of data-privacy issues.
+
+The data is organized in tabular format and has 13 columns and 4073561 rows. The **member_casual** column will allow me to group, aggregate and compare trends between casual riders and member riders. 
+
+## Processing the Data from Dirty to Clean
