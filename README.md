@@ -66,3 +66,15 @@ Upon getting the summary to ensure data was ready for analysis, I discovered tha
 
 Finally, I got the summary of the data and concluded the data was ready for analysis. 
 
+## Analyze Data to Answer Questions
+
+In this step, I analyzed the cleaned data to find out how annual members and casual riders use Cyclistic bikes differently.
+
+First, I got the total number of bike hired and established how they were shared between casual riders and  member riders. Next, I examined how total bike hires were distributed per month and then per day. This revealed some interesting trends that I shall discuss in the **share** stage. 
+
+Next, I examined how bike hires between the two types of rider categories compared in a given month of the year and day of the week. The goal at this point was to find out whether casual riders had a preference for certain days or months compared with member riders. 
+
+Next, I wanted to compare the difference in average ride length between casual riders and member riders. I discovered that casual riders tend to ride for longer periods of time compared to member riders. I was intrigued and decided to explore how the average ride length compares for both rider categories on daily and monthly basis. 
+
+Finally I compared how how the type of bike hired compared between the two rider categories. 
+
