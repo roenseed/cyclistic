@@ -80,4 +80,4 @@ Finally I compared how how the type of bike hired compared between the two rider
 
 ## Sharing Insighs Through Visualization 
 
-In this step, I created intuitive visualizations using seaborn and matplotlib python libraries to communicate the results of my analysis. The visualizations and insights gleaned can be found [here.](https://docs.google.com/presentation/d/1e1jH8BLl7_G375k351nEMYRkoUlVApy_xKavx6Jrafo/edit?usp=sharing)
+In this step, I created intuitive visualizations using seaborn and matplotlib python libraries to communicate the results of my analysis. The visualizations and insights gleaned can be found [here.](https://docs.google.com/presentation/d/1WgqoFSdTBxqMGDGwa_Xd8_gT_EXY0gOkgITpdYRkwmc/edit?usp=sharing)
