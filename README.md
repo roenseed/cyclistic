@@ -78,3 +78,6 @@ Next, I wanted to compare the difference in average ride length between casual r
 
 Finally I compared how how the type of bike hired compared between the two rider categories. 
 
+## Sharing Insighs Through Visualization 
+
+In this step, I created intuitive visualizations using seaborn and matplotlib python libraries to communicate the results of my analysis. The visualizations and insights gleaned can be found [here.](https://docs.google.com/presentation/d/1e1jH8BLl7_G375k351nEMYRkoUlVApy_xKavx6Jrafo/edit?usp=sharing)
