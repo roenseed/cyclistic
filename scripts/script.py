@@ -350,7 +350,46 @@ ax.set_xticklabels(weekly_average_ride_length_df["Day"])
 plt.legend(["Casual", "Member"], loc="upper right")
 plt.show()
 
-# RIDEABLE TYPE PER RIDER CATEGORY
 
+# AVERAGE RIDE LENGTH FOR RIDERS BY MONTH
+
+average_daily_ride_length_per_month = clean_df.groupby(["member_casual", "month"])[
+    "ride_length"
+].mean()
+print(f"Average ride lenth per category per day {average_daily_ride_length_per_month}")
+
+monthly_average_ride_length_df = pd.DataFrame()
+
+monthly_average_ride_length_df["casual"] = average_daily_ride_length_per_month["casual"]
+monthly_average_ride_length_df["member"] = average_daily_ride_length_per_month["member"]
+monthly_average_ride_length_df["month"] = monthly_average_ride_length_df.index
+
+print(monthly_average_ride_length_df)
+
+pos = list(range(len(monthly_average_ride_length_df["casual"])))
+width = 0.25
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+plt.bar(pos, monthly_average_ride_length_df["casual"], width)
+plt.bar([p + width for p in pos], monthly_average_ride_length_df["member"], width)
+
+# Setting the y and x axis label
+ax.set_ylabel("Average Ride Length")
+ax.set_xlabel("Month")
+# Setting the chart's title
+ax.set_title("Average Ride Length per Rider Category per Month", loc="left", pad=20)
+
+# Setting the position of the x ticks
+ax.set_xticks([p + 1.5 * width for p in pos])
+
+# Setting the labels for the x ticks
+ax.set_xticklabels(months)
+
+# Adding the legend and showing the plot
+plt.legend(["Casual", "Member"], loc="upper right")
+plt.show()
+
+# RIDEABLE TYPE PER RIDER CATEGORY
 type_of_bike = clean_df.groupby(["member_casual"])["rideable_type"].value_counts()
 print(type_of_bike)
