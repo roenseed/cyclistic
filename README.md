@@ -1,4 +1,4 @@
-# **Case Study: How does a bike-share company navigate speedy success?**
+# **Case Study: Converting Casual Cyclistic Riders to Annual Members**
 
 ![people_riding_a_bike](./images/bike.jpg)
 *Image: Getty Images/iStock*
