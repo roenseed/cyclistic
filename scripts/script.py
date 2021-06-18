@@ -167,10 +167,10 @@ total_riders_using_id = clean_df.groupby(["member_casual"])["ride_id"].count()
 print(f"Total riders using ride_id \n {total_riders_using_id}")
 
 # Pie chart to show riders per category
-fig, ax = plt.subplots(figsize=(8, 4))
+fig, ax = plt.subplots(figsize=(7, 3), dpi=90)
 labels = ["Member", "Casual"]
 plt.pie(x=total_riders, autopct="%.1f%%", labels=labels)
-ax.set_title("Total Bike Hires Per Rider Category", pad=20, loc="center")
+ax.set_title("Total Bike Hires Per Rider Category", pad=14, loc="center")
 plt.show()
 
 # Find out how bike hires were distibuted throughout the year
@@ -198,8 +198,8 @@ months = [
 ]
 print(ride_hires_per_month)
 
-plt.figure(figsize=(11, 5), dpi=100)
-plt.title("Total Bike Hires per Month", loc="left", pad=20)
+plt.figure(figsize=(7, 3), dpi=90)
+plt.title("Total Bike Hires per Month", loc="left", pad=14)
 sns.barplot(data=ride_hires_per_month, x=months, y="Total Hires")
 plt.show()
 
@@ -215,8 +215,8 @@ ride_hires_per_day = (
 ride_hires_per_day.sort_values(by=["Total Hires"], inplace=True, ascending=True)
 print(ride_hires_per_day)
 
-plt.figure(figsize=(11, 5), dpi=100)
-plt.title("Total Bike Hires per Day of the Week", loc="left", pad=20)
+plt.figure(figsize=(7, 3), dpi=90)
+plt.title("Total Bike Hires per Day of the Week", loc="left", pad=14)
 sns.barplot(data=ride_hires_per_day, x="Day", y="Total Hires")
 plt.show()
 
@@ -238,7 +238,7 @@ print(monthly_casual_member_df)
 pos = list(range(len(monthly_casual_member_df["casual"])))
 width = 0.25
 
-fig, ax = plt.subplots(figsize=(10, 5))
+fig, ax = plt.subplots(figsize=(7, 3), dpi=90)
 
 plt.bar(pos, monthly_casual_member_df["casual"], width)
 plt.bar([p + width for p in pos], monthly_casual_member_df["member"], width)
@@ -247,7 +247,7 @@ plt.bar([p + width for p in pos], monthly_casual_member_df["member"], width)
 ax.set_ylabel("Total Hires")
 ax.set_xlabel("Month")
 # Setting the chart's title
-ax.set_title("Total Bike Hires per Rider Category per Month", loc="left", pad=20)
+ax.set_title("Total Bike Hires per Rider Category per Month", loc="left", pad=14)
 
 # Setting the position of the x ticks
 ax.set_xticks([p + 1.5 * width for p in pos])
@@ -278,7 +278,7 @@ print(casual_member_df)
 pos = list(range(len(casual_member_df["casual"])))
 width = 0.25
 
-fig, ax = plt.subplots(figsize=(10, 5))
+fig, ax = plt.subplots(figsize=(7, 3), dpi=90)
 
 plt.bar(pos, casual_member_df["casual"], width)
 plt.bar([p + width for p in pos], casual_member_df["member"], width)
@@ -287,7 +287,7 @@ plt.bar([p + width for p in pos], casual_member_df["member"], width)
 ax.set_ylabel("Total Hires")
 ax.set_xlabel("Day of the Week")
 # Setting the chart's title
-ax.set_title("Total Bike Hires per Rider Category per Day", loc="left", pad=20)
+ax.set_title("Total Bike Hires per Rider Category per Day", loc="left", pad=14)
 
 # Setting the position of the x ticks
 ax.set_xticks([p + 1.5 * width for p in pos])
@@ -305,10 +305,10 @@ plt.show()
 average_ride_length = clean_df.groupby(["member_casual"])["ride_length"].mean()
 print(f"The average ride length per category {average_ride_length}")
 
-fig, ax = plt.subplots(figsize=(8, 4))
+fig, ax = plt.subplots(figsize=(7, 3), dpi=90)
 labels = ["Casual", "Member"]
 plt.pie(x=average_ride_length, autopct="%.1f%%", labels=labels)
-ax.set_title("Average Ride Length", pad=20, loc="center")
+ax.set_title("Average Ride Length", pad=14, loc="center")
 plt.show()
 
 # AVERAGE RIDE LENGTH FOR RIDERS BY DAY OF THE WEEK
@@ -329,7 +329,7 @@ print(weekly_average_ride_length_df)
 pos = list(range(len(weekly_average_ride_length_df["casual"])))
 width = 0.25
 
-fig, ax = plt.subplots(figsize=(10, 5))
+fig, ax = plt.subplots(figsize=(7, 3), dpi=90)
 
 plt.bar(pos, weekly_average_ride_length_df["casual"], width)
 plt.bar([p + width for p in pos], weekly_average_ride_length_df["member"], width)
@@ -338,7 +338,7 @@ plt.bar([p + width for p in pos], weekly_average_ride_length_df["member"], width
 ax.set_ylabel("Average Ride Length")
 ax.set_xlabel("Day of the Week")
 # Setting the chart's title
-ax.set_title("Average Ride Length per Rider Category per Day", loc="left", pad=20)
+ax.set_title("Average Ride Length per Rider Category per Day", loc="left", pad=14)
 
 # Setting the position of the x ticks
 ax.set_xticks([p + 1.5 * width for p in pos])
@@ -369,7 +369,7 @@ print(monthly_average_ride_length_df)
 pos = list(range(len(monthly_average_ride_length_df["casual"])))
 width = 0.25
 
-fig, ax = plt.subplots(figsize=(10, 5))
+fig, ax = plt.subplots(figsize=(7, 3), dpi=90)
 
 plt.bar(pos, monthly_average_ride_length_df["casual"], width)
 plt.bar([p + width for p in pos], monthly_average_ride_length_df["member"], width)
@@ -378,7 +378,7 @@ plt.bar([p + width for p in pos], monthly_average_ride_length_df["member"], widt
 ax.set_ylabel("Average Ride Length")
 ax.set_xlabel("Month")
 # Setting the chart's title
-ax.set_title("Average Ride Length per Rider Category per Month", loc="left", pad=20)
+ax.set_title("Average Ride Length per Rider Category per Month", loc="left", pad=14)
 
 # Setting the position of the x ticks
 ax.set_xticks([p + 1.5 * width for p in pos])
