@@ -37,22 +37,22 @@ This case study uses Cyclistic's historical trip data (previous 12 months) to an
 
 This data is reliable, original, comprehensive and current as it is internally collected and stored safely by Cyclistic from June 2020 to May 2021. Personally identifiable information  such as credit card numbers has been removed because of data-privacy issues.
 
-The data selected for use covers the last 12 months from June 2020 to May 2021. Each month has a separate dataset. The datasets are organized in tabular format and have 13 identical columns. Combined the datasets have 4073561 rows. The **member_casual** column will allow me to group, aggregate and compare trends between casual riders and member riders. 
+The data selected for use covers the last 12 months from June 2020 to May 2021. Each month has a separate dataset. The datasets are organized in tabular format and have 13 identical columns. Combined, the datasets have 4073561 rows. The **member_casual** column will allow me to group, aggregate and compare trends between casual riders and member riders. 
 
 ## Processing the Data from Dirty to Clean
 
 ### Tools
-To process the data from dirty to clean, I chose to use **python.** This is because python is fast and thus useful in dealing with huge dasets. Python is also heavily supported by handy open-source libraries such as pandas and matplotlib. 
+To process the data from dirty to clean, I chose to use **python.** This is because python is relatively fast and thus useful in dealing with huge dasets. Python is also heavily supported by handy open-source libraries such as pandas and matplotlib. 
 
 ### Cleaning the data
 
-After reading in and combining the 12 datasets into a single dataframe, the first step in data cleaning was to identify which columns and rows have missing data. I disvored that 6 out of 13 columns had missing data. Additionally, 314299 also had missing values. 
+After reading in and combining the 12 datasets into a single dataframe, the first step in data cleaning was to identify which columns and rows have missing data. I disvored that 6 out of 13 columns had missing data. Additionally, 314299 rows had missing values. 
 
 Next, I indexed into into the first and last row with missing data and disovered that they had null values on multiple columns. I also computed the percentage of rows that had missing values. This stood at 7.71%. Upon examing the columns with missing data, I decided imputation would be a wrong approach because of the nature of the missing data. 
 
-Since, rows with missing values account for a tiny percentage of our data and appear to have missing values on multiple columns, I decided to drop them. 
+Since rows with missing values account for a tiny percentage of our data and appear to have missing values on multiple columns, I decided to remove them. 
 
-After dropping rows with missing data, I checked if any of the remaining observations had duplicates. None of the rows were duplicate. After this step, I was confident the data was ready for further processing and analysis. 
+After dropping rows with missing data, I checked if any of the remaining observations had duplicates. None of the rows were duplicated. After this step, I was confident the data was ready for further processing and analysis. 
 
 ### Transforming the data
 
@@ -76,8 +76,8 @@ Next, I examined how bike hires between the two types of rider categories compar
 
 Next, I wanted to compare the difference in average ride length between casual riders and member riders. I discovered that casual riders tend to ride for longer periods of time compared to member riders. I was intrigued and decided to explore how the average ride length compares for both rider categories on daily and monthly basis. 
 
-Finally I compared how how the type of bike hired compared between the two rider categories. 
+Finally I compared how the type of bike hired compared between the two rider categories. 
 
-## Sharing Insighs Through Visualization 
+## Sharing Insights Through Visualization 
 
 In this step, I created intuitive visualizations using seaborn and matplotlib python libraries to communicate the results of my analysis. The visualizations and insights gleaned can be found [here.](https://docs.google.com/presentation/d/1WgqoFSdTBxqMGDGwa_Xd8_gT_EXY0gOkgITpdYRkwmc/edit?usp=sharing)
